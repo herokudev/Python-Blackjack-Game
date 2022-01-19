@@ -28,6 +28,7 @@ class Player:
         self.hand = hand
         self.score = self.setScore()
         self.money = money
+        self.bet = 0
 
     def __str__(self):  # print(Player)
         currentHand = ""  # self.hand = ["A", "10"]
@@ -62,22 +63,34 @@ class Player:
         self.hand = newHand
         self.score = self.setScore()
 
-    def pay(self, amount):
+    def betMoney(self, amount):
         self.money -= amount
+        self.bet += amount
 
-    def win(self, amount):
-        self.money += amount
+    def win(self, result):
+        if result == True:
+            if self.score == 21 and len(self.hand) == 2:
+                self.money += 2.5 * self.bet
+            else:
+                self.money += 2 * self.bet
+        self.bet = 0
 
 
-Player1 = Player(["3", "7", "5"])
+def printHouse(House):
+    for card in range(len(House.hand)):
+        if card == 0:
+            print("X", end=" ")
+        elif card == len(House.hand) - 1:
+            print(House.hand[card])
+        else:
+            print(House.hand[card], end="")
+
+
+cardDeck = createDeck()
+firstHand = [cardDeck.pop(), cardDeck.pop()]
+secondHand = [cardDeck.pop(), cardDeck.pop()]
+Player1 = Player(firstHand)
+House = Player(secondHand)
+print(cardDeck)
+printHouse(House)
 print(Player1)
-Player1.hit("A")
-Player1.hit("A")
-print(Player1)
-Player1.pay(20)
-print(Player1.money)
-Player1.win(40)
-print(Player1.money)
-Player1.play(["A", "K"])
-print(Player1)
-print(Player1.money)
